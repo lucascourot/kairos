@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     denormalizationContext={"allow_extra_attributes"=false}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\ExerciseRepository")
  */
 class Exercise
@@ -20,8 +23,14 @@ class Exercise
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="json_array", nullable=true, options={"jsonb": true})
+     */
+    private $questions;
 
     public function getId(): ?int
     {
@@ -36,6 +45,18 @@ class Exercise
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getQuestions(): array
+    {
+        return $this->questions;
+    }
+
+    public function setQuestions(array $questions): self
+    {
+        $this->questions = $questions;
 
         return $this;
     }

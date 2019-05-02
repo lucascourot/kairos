@@ -1,3 +1,4 @@
 App\Entity\Exercise:
   exercise_{1..5}:
     name: <sentence(4)>
+    questions: ["What's your name?", "What's the sun color?", "How old are you?"]

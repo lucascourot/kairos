@@ -27,8 +27,24 @@ class CreateExerciseTest extends KernelTestCase
     public function testShouldCreateExerciseWithMCQ()
     {
         $response = $this->client->request('POST', '/api/exercises', [
-            'json' => ['name' => 'test - exercise with MCQ'],
+            'json' => [
+                'name' => 'test - exercise with MCQ',
+                'questions' => [
+                    [
+                        'type' => 'MCQ',
+                        'label' => 'What\'s the sun color?',
+                        'choices' => [
+                            ['isCorrect' => true, 'label' => 'yellow'],
+                            ['isCorrect' => false, 'label' => 'blue'],
+                            ['isCorrect' => false, 'label' => 'green'],
+                            ['isCorrect' => false, 'label' => 'pink'],
+                        ],
+                    ],
+                ],
+            ],
         ]);
+
+        $response->getContent();
 
         $this->exerciseId = $response->toArray()['id'];
 
