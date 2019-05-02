@@ -26,6 +26,7 @@ class CreateExerciseTest extends KernelTestCase
 
     public function testShouldCreateExerciseWithMCQ()
     {
+        // When
         $response = $this->client->request('POST', '/api/exercises', [
             'json' => [
                 'name' => 'test - exercise with MCQ',
@@ -44,15 +45,51 @@ class CreateExerciseTest extends KernelTestCase
             ],
         ]);
 
-        $response->getContent();
-
         $this->exerciseId = $response->toArray()['id'];
 
+        // Then
         $this->assertSame(201, $response->getStatusCode());
+    }
+
+    public function testShouldNotCreateExerciseWithMCQButNoGoodChoice()
+    {
+        // When
+        $response = $this->client->request('POST', '/api/exercises', [
+            'json' => [
+                'name' => 'test - exercise with MCQ but no good choice',
+                'questions' => [
+                    [
+                        'type' => 'MCQ',
+                        'label' => 'Where does the rain come from?',
+                        'choices' => [
+                            ['isCorrect' => false, 'label' => 'the sun'],
+                            ['isCorrect' => false, 'label' => 'the birds'],
+                            ['isCorrect' => false, 'label' => 'the roof'],
+                            ['isCorrect' => false, 'label' => 'the sky'],
+                        ],
+                    ],
+                    [
+                        'type' => 'MCQ',
+                        'label' => 'Where does rice come from?',
+                        'choices' => [
+                            ['isCorrect' => true, 'label' => 'china'],
+                            ['isCorrect' => false, 'label' => 'russia'],
+                            ['isCorrect' => false, 'label' => 'france'],
+                            ['isCorrect' => false, 'label' => 'usa'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        // Then
+        $this->assertSame(400, $response->getStatusCode());
     }
 
     protected function tearDown(): void
     {
-        $this->client->request('DELETE', '/api/exercises/'.$this->exerciseId);
+        if ($this->exerciseId) {
+            $this->client->request('DELETE', '/api/exercises/'.$this->exerciseId);
+        }
     }
 }

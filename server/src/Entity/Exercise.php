@@ -5,10 +5,19 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Controller\CreateExerciseController;
 
 /**
  * @ApiResource(
- *     denormalizationContext={"allow_extra_attributes"=false}
+ *     denormalizationContext={"allow_extra_attributes"=false},
+ *     collectionOperations={
+ *         "get",
+ *         "post_exercise"={
+ *             "method"="POST",
+ *             "path"="/exercises.{_format}",
+ *             "controller"=CreateExerciseController::class,
+ *         }
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ExerciseRepository")
  */
@@ -59,5 +68,23 @@ class Exercise
         $this->questions = $questions;
 
         return $this;
+    }
+
+    public function areAllMCQValid(): bool
+    {
+        foreach ($this->questions as $question) {
+            $isValidQuestion = false;
+            foreach ($question['choices'] as $choice) {
+                if ($choice['isCorrect'] === true) {
+                    $isValidQuestion = true;
+                }
+            }
+
+            if ($isValidQuestion === false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
