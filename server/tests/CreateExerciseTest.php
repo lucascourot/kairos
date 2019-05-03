@@ -2,7 +2,8 @@
 
 namespace App\Tests;
 
-use App\Validator\Constraints\QuestionsMinimalProperties;
+use App\Entity\Exercise;
+use App\Validator\Constraints\MCQ;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -33,7 +34,7 @@ class CreateExerciseTest extends KernelTestCase
                 'name' => 'test - exercise with MCQ',
                 'questions' => [
                     [
-                        'type' => 'MCQ',
+                        'type' => Exercise::TYPE_MCQ,
                         'label' => 'What\'s the sun color?',
                         'choices' => [
                             ['isCorrect' => true, 'label' => 'yellow'],
@@ -60,7 +61,7 @@ class CreateExerciseTest extends KernelTestCase
                 'name' => 'test - exercise with MCQ but no good choice',
                 'questions' => [
                     [
-                        'type' => 'MCQ',
+                        'type' => Exercise::TYPE_MCQ,
                         'label' => 'Where does the rain come from?',
                         'choices' => [
                             ['isCorrect' => false, 'label' => 'the sun'],
@@ -70,7 +71,7 @@ class CreateExerciseTest extends KernelTestCase
                         ],
                     ],
                     [
-                        'type' => 'MCQ',
+                        'type' => Exercise::TYPE_MCQ,
                         'label' => 'Where does rice come from?',
                         'choices' => [
                             ['isCorrect' => true, 'label' => 'china'],
@@ -97,6 +98,7 @@ class CreateExerciseTest extends KernelTestCase
                     [
                         'type' => '',
                         'label' => '',
+                        'choices' => [],
                     ],
                 ],
             ],
@@ -105,9 +107,44 @@ class CreateExerciseTest extends KernelTestCase
         // Then
         $this->assertSame(400, $response->getStatusCode());
         $errorMessages = array_column($response->toArray(false)['violations'], 'message');
+
         $this->assertEquals([
-            'The "type" field should not be blank.',
-            'The "label" field should not be blank.',
+            'The value you selected is not a valid choice.',
+            'This value should not be blank.',
+        ], $errorMessages);
+    }
+
+    public function testShouldHaveValidChoices()
+    {
+        // When
+        $response = $this->client->request('POST', '/api/exercises', [
+            'json' => [
+                'name' => 'test - exercise questions should have valid choices',
+                'questions' => [
+                    [
+                        'type' => Exercise::TYPE_MCQ,
+                        'label' => 'What is the correct answer?',
+                        'choices' => [
+                            ['isCorrect' => false],
+                            ['isCorrect' => true, 'label' => 'this one'],
+                            ['label' => 'not this one'],
+                            [],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        // Then
+        $this->assertSame(400, $response->getStatusCode());
+        $errorMessages = array_column($response->toArray(false)['violations'], 'message');
+
+        $this->assertEquals([
+            'This field is missing.',
+            'This field is missing.',
+            'This field is missing.',
+            'This field is missing.',
+            (new MCQ())->validQuestionRequired,
         ], $errorMessages);
     }
 

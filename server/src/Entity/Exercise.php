@@ -3,27 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Validator\Constraints\QuestionsMinimalProperties;
+use App\Validator\Constraints\MCQ;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Controller\CreateExerciseController;
 
 /**
  * @ApiResource(
- *     denormalizationContext={"allow_extra_attributes"=false},
- *     collectionOperations={
- *         "get",
- *         "post_exercise"={
- *             "method"="POST",
- *             "path"="/exercises.{_format}",
- *             "controller"=CreateExerciseController::class,
- *         }
- *     }
+ *     denormalizationContext={"allow_extra_attributes"=false}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ExerciseRepository")
  */
 class Exercise
 {
+    /** @var string */
+    public const TYPE_MCQ = 'MCQ';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -39,7 +33,25 @@ class Exercise
 
     /**
      * @ORM\Column(type="json_array", nullable=true, options={"jsonb": true})
-     * @QuestionsMinimalProperties()
+     * @Assert\All({
+     *     @Assert\Collection(
+     *         fields={
+     *             "type" = @Assert\Required({@Assert\Choice({"MCQ"})}),
+     *             "label" = @Assert\Required({@Assert\NotBlank()}),
+     *             "choices" = @Assert\Optional({
+     *                 @Assert\All({
+     *                     @Assert\Collection(
+     *                         fields={
+     *                             "isCorrect" = @Assert\Required({@Assert\Type(type="boolean")}),
+     *                             "label" = @Assert\Required({@Assert\NotBlank()})
+     *                         }
+     *                    )
+     *                 })
+     *             })
+     *         }
+     *     ),
+     *     @MCQ,
+     * })
      */
     private $questions;
 
@@ -71,22 +83,4 @@ class Exercise
 
         return $this;
     }
-/*
-    public function areAllMCQValid(): bool
-    {
-        foreach ($this->questions as $question) {
-            $isValidQuestion = false;
-            foreach ($question['choices'] as $choice) {
-                if ($choice['isCorrect'] === true) {
-                    $isValidQuestion = true;
-                }
-            }
-
-            if ($isValidQuestion === false) {
-                return false;
-            }
-        }
-
-        return true;
-    }*/
 }
