@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Validator\Constraints\QuestionsMinimalProperties;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -84,6 +85,30 @@ class CreateExerciseTest extends KernelTestCase
 
         // Then
         $this->assertSame(400, $response->getStatusCode());
+    }
+
+    public function testShouldValidateExerciseCreation()
+    {
+        // When
+        $response = $this->client->request('POST', '/api/exercises', [
+            'json' => [
+                'name' => 'test - invalid exercise',
+                'questions' => [
+                    [
+                        'type' => '',
+                        'label' => '',
+                    ],
+                ],
+            ],
+        ]);
+
+        // Then
+        $this->assertSame(400, $response->getStatusCode());
+        $errorMessages = array_column($response->toArray(false)['violations'], 'message');
+        $this->assertEquals([
+            'The "type" field should not be blank.',
+            'The "label" field should not be blank.',
+        ], $errorMessages);
     }
 
     protected function tearDown(): void

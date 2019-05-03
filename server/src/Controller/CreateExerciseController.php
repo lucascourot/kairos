@@ -23,10 +23,6 @@ final class CreateExerciseController
         $em->persist($data);
         $em->flush();
 
-        if (!$data->areAllMCQValid()) {
-            throw new \InvalidArgumentException('A choice must be selected.');
-        }
-
         return $data;
     }
 }

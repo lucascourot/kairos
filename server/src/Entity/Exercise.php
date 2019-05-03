@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Validator\Constraints\QuestionsMinimalProperties;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Controller\CreateExerciseController;
@@ -38,6 +39,7 @@ class Exercise
 
     /**
      * @ORM\Column(type="json_array", nullable=true, options={"jsonb": true})
+     * @QuestionsMinimalProperties()
      */
     private $questions;
 
@@ -69,7 +71,7 @@ class Exercise
 
         return $this;
     }
-
+/*
     public function areAllMCQValid(): bool
     {
         foreach ($this->questions as $question) {
@@ -86,5 +88,5 @@ class Exercise
         }
 
         return true;
-    }
+    }*/
 }
