@@ -143,8 +143,7 @@ class CreateExerciseTest extends KernelTestCase
             'This field is missing.',
             'This field is missing.',
             'This field is missing.',
-            'This field is missing.',
-            (new MCQ())->validQuestionRequired,
+            'This field is missing.'
         ], $errorMessages);
     }
 

@@ -1,4 +1,48 @@
 App\Entity\Exercise:
   exercise_{1..5}:
     name: <sentence(4)>
-    questions: ["What's your name?", "What's the sun color?", "How old are you?"]
+    questions:
+      - {
+          type: "MCQ",
+          label: "What's your name?",
+          choices: [
+            {
+              isCorrect: true,
+              label: <firstName()>
+            },
+            {
+              isCorrect: false,
+              label: <firstName()>
+            },
+            {
+              isCorrect: false,
+              label: <firstName()>,
+            },
+            {
+              isCorrect: true,
+              label: <firstName()>
+            }
+          ]
+        }
+      - {
+          type: "MCQ",
+          label: "What's the sun color?",
+          choices: [
+            {
+              isCorrect: false,
+              label: "green"
+            },
+            {
+              isCorrect: false,
+              label: "blue"
+            },
+            {
+              isCorrect: true,
+              label: "yellow"
+            },
+            {
+              isCorrect: false,
+              label: "pink"
+            }
+          ]
+        }
