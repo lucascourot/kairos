@@ -33,7 +33,7 @@ class Exercise
      *     attributes={
      *         "swagger_context"={
      *             "type"="string",
-     *             "example"="About Front-End development..."
+     *             "example"="About the weather..."
      *         }
      *     }
      * )
@@ -45,29 +45,45 @@ class Exercise
      * @ApiProperty(
      *     attributes={
      *         "swagger_context"={
-     *             "type"="object",
-     *             "example"={
-     *                 "type": "MCQ",
-     *                 "label": "What's the most frequently used JS framework in our company?",
-     *                 "choices": {
-     *                      {
-     *                          "isCorrect": false,
-     *                          "label": "Vue.js"
-     *                      },
-     *                      {
-     *                          "isCorrect": false,
-     *                          "label": "Ember"
-     *                      },
-     *                      {
-     *                          "isCorrect": true,
-     *                          "label": "React"
-     *                      },
-     *                      {
-     *                          "isCorrect": false,
-     *                          "label": "Angular"
-     *                      },
+     *             "type"="array",
+     *             "items"={
+     *                 "properties"={
+     *                     "type"={"type"="string", "example"="MCQ"},
+     *                     "label"={"type"="string", "example"="What's the weather like?"},
+     *                     "choices"={
+     *                         "type"="array",
+     *                         "items"={
+     *                             "type"="object",
+     *                             "properties"={
+     *                                 "isCorrect"={"type"="boolean", "example"=false},
+     *                                 "label"={"type"="string", "example"="Cloudy"}
+     *                             }
+     *                         }
+     *                     }
      *                 }
-     *             }
+     *             },
+     *             "example"={
+     *                 {
+     *                     "type"="MCQ",
+     *                     "label"="What's the weather like today?",
+     *                     "choices"={
+     *                         {"isCorrect"=true, "label"="Sunny"},
+     *                         {"isCorrect"=false, "label"="Cloudy"},
+     *                         {"isCorrect"=false, "label"="Windy"},
+     *                         {"isCorrect"=false, "label"="Rainy"}
+     *                     }
+     *                 },
+     *                 {
+     *                     "type"="MCQ",
+     *                     "label"="What is the color of a cloud?",
+     *                     "choices"={
+     *                         {"isCorrect"=false, "label"="green"},
+     *                         {"isCorrect"=true, "label"="white"},
+     *                         {"isCorrect"=true, "label"="grey"},
+     *                         {"isCorrect"=false, "label"="blue"}
+     *                     }
+     *                 },
+     *              }
      *         }
      *     }
      * )
@@ -112,14 +128,15 @@ class Exercise
             new Assert\All([
                 new Assert\Collection([
                     'fields' => [
-                        'type' => new Assert\Required([new Assert\Choice(['MCQ'])]),
-                        'label' => new Assert\Required([new Assert\NotBlank()]),
+                        'type' => new Assert\Required(new Assert\Choice(['MCQ'])),
+                        'label' => new Assert\Required(new Assert\NotBlank()),
                         'choices' => new Assert\Optional([
+                            new Assert\Type(["type" => "array"]),
                             new Assert\All([
                                 new Assert\Collection([
                                     'fields' => [
-                                        'isCorrect' => new Assert\Required([new Assert\Type(['type' => 'boolean'])]),
-                                        'label' => new Assert\Required([new Assert\NotBlank()])
+                                        'isCorrect' => new Assert\Required(new Assert\Type(['type' => 'boolean'])),
+                                        'label' => new Assert\Required(new Assert\NotBlank())
                                     ]
                                 ])
                             ])
