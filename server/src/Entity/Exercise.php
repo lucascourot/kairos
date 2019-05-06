@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Validator\Constraints\MCQ;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ApiResource(
@@ -27,31 +28,11 @@ class Exercise
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\Column(type="json_array", nullable=true, options={"jsonb": true})
-     * @Assert\All({
-     *     @Assert\Collection(
-     *         fields={
-     *             "type" = @Assert\Required({@Assert\Choice({"MCQ"})}),
-     *             "label" = @Assert\Required({@Assert\NotBlank()}),
-     *             "choices" = @Assert\Optional({
-     *                 @Assert\All({
-     *                     @Assert\Collection(
-     *                         fields={
-     *                             "isCorrect" = @Assert\Required({@Assert\Type(type="boolean")}),
-     *                             "label" = @Assert\Required({@Assert\NotBlank()})
-     *                         }
-     *                    )
-     *                 })
-     *             })
-     *         }
-     *     ),
-     *     @MCQ,
-     * })
      */
     private $questions;
 
@@ -82,5 +63,33 @@ class Exercise
         $this->questions = $questions;
 
         return $this;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('name', new Assert\NotBlank());
+
+        $metadata->addPropertyConstraint(
+            'questions',
+            new Assert\All([
+                new Assert\Collection([
+                    'fields' => [
+                        'type' => new Assert\Required([new Assert\Choice(['MCQ'])]),
+                        'label' => new Assert\Required([new Assert\NotBlank()]),
+                        'choices' => new Assert\Optional([
+                            new Assert\All([
+                                new Assert\Collection([
+                                    'fields' => [
+                                        'isCorrect' => new Assert\Required([new Assert\Type(['type' => 'boolean'])]),
+                                        'label' => new Assert\Required([new Assert\NotBlank()])
+                                    ]
+                                ])
+                            ])
+                        ])
+                    ]
+                ]),
+                new MCQ(),
+            ])
+        );
     }
 }

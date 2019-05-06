@@ -19,7 +19,7 @@ class CreateExerciseTest extends KernelTestCase
     protected function setUp(): void
     {
         $this->client = HttpClient::create([
-            'base_uri' => 'http://127.0.0.1:8000',
+            'base_uri' => 'http://172.17.189.23:8000',
             'headers' => [
                 'Accept' => 'application/ld+json',
             ],
