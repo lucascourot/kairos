@@ -8,6 +8,7 @@
         "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "phpunit/phpunit": "^8.1",
+        "ramsey/uuid-doctrine": "^1.5",
         "symfony/console": "4.2.*",
         "symfony/contracts": "^1.1@dev",
         "symfony/dotenv": "4.2.*",
@@ -59,7 +60,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "4.2.*"
         }
     },
