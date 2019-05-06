@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Validator\Constraints\MCQ;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,11 +29,48 @@ class Exercise
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context"={
+     *             "type"="string",
+     *             "example"="About Front-End development..."
+     *         }
+     *     }
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="json_array", nullable=true, options={"jsonb": true})
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context"={
+     *             "type"="object",
+     *             "example"={
+     *                 "type": "MCQ",
+     *                 "label": "What's the most frequently used JS framework in our company?",
+     *                 "choices": {
+     *                      {
+     *                          "isCorrect": false,
+     *                          "label": "Vue.js"
+     *                      },
+     *                      {
+     *                          "isCorrect": false,
+     *                          "label": "Ember"
+     *                      },
+     *                      {
+     *                          "isCorrect": true,
+     *                          "label": "React"
+     *                      },
+     *                      {
+     *                          "isCorrect": false,
+     *                          "label": "Angular"
+     *                      },
+     *                 }
+     *             }
+     *         }
+     *     }
+     * )
      */
     private $questions;
 

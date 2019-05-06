@@ -3,7 +3,6 @@
 namespace App\Tests;
 
 use App\Entity\Exercise;
-use App\Validator\Constraints\MCQ;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -18,8 +17,10 @@ class CreateExerciseTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        $kernel = self::bootKernel();
+
         $this->client = HttpClient::create([
-            'base_uri' => 'http://172.17.189.23:8000',
+            'base_uri' => $kernel->getContainer()->getParameter('api_base_uri'),
             'headers' => [
                 'Accept' => 'application/ld+json',
             ],
