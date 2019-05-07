@@ -128,30 +128,29 @@ class Exercise
         $metadata->addPropertyConstraint('name', new Assert\NotBlank());
 
         $metadata->addPropertyConstraints(
-            'questions',
-            [
-            new Question(),
-            new Assert\All([
-                new Assert\Collection([
-                    'fields' => [
-                        'position' => new Assert\Required(new Assert\Type(['type' => 'integer'])),
-                        'type' => new Assert\Required(new Assert\Choice(['MCQ'])),
-                        'label' => new Assert\Required(new Assert\NotBlank()),
-                        'choices' => new Assert\Optional([
-                            new Assert\Type(["type" => "array"]),
-                            new Assert\All([
-                                new Assert\Collection([
-                                    'fields' => [
-                                        'isCorrect' => new Assert\Required(new Assert\Type(['type' => 'boolean'])),
-                                        'label' => new Assert\Required(new Assert\NotBlank())
-                                    ]
+            'questions', [
+                new Question(),
+                new Assert\All([
+                    new Assert\Collection([
+                        'fields' => [
+                            'position' => new Assert\Required(new Assert\Type(['type' => 'integer'])),
+                            'type' => new Assert\Required(new Assert\Choice([self::TYPE_MCQ])),
+                            'label' => new Assert\Required(new Assert\NotBlank()),
+                            'choices' => new Assert\Optional([
+                                new Assert\Type(["type" => "array"]),
+                                new Assert\All([
+                                    new Assert\Collection([
+                                        'fields' => [
+                                            'isCorrect' => new Assert\Required(new Assert\Type(['type' => 'boolean'])),
+                                            'label' => new Assert\Required(new Assert\NotBlank())
+                                        ]
+                                    ])
                                 ])
                             ])
-                        ])
-                    ]
-                ]),
-                new MCQ(),
-            ])
+                        ]
+                    ]),
+                    new MCQ(),
+                ])
             ]
         );
     }
