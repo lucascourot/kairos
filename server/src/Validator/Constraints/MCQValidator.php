@@ -33,12 +33,14 @@ final class MCQValidator extends ConstraintValidator
                 }
             }
 
-            if ($missingField) {return;}
+            if ($missingField) {
+                return;
+            }
 
             $isValidQuestion = false;
 
             foreach ($question['choices'] as $choice) {
-                if ($choice['isCorrect'] ?? false === true) {
+                if (($choice['isCorrect'] ?? false) === true) {
                     $isValidQuestion = true;
                 }
             }

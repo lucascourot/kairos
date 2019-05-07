@@ -149,7 +149,7 @@ class CreateExerciseTest extends KernelTestCase
             'This field is missing.',
             'This field is missing.',
             'This field is missing.',
-            'This field is missing.'
+            'This field is missing.',
         ], $errorMessages);
     }
 
@@ -194,7 +194,7 @@ class CreateExerciseTest extends KernelTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ]);
 
         // Then
@@ -244,7 +244,7 @@ class CreateExerciseTest extends KernelTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ]);
 
         // Then
@@ -254,7 +254,7 @@ class CreateExerciseTest extends KernelTestCase
     protected function tearDown(): void
     {
         if ($this->exerciseId) {
-            $this->client->request('DELETE', '/api/exercises/' . $this->exerciseId);
+            $this->client->request('DELETE', '/api/exercises/'.$this->exerciseId);
         }
     }
 
@@ -262,7 +262,7 @@ class CreateExerciseTest extends KernelTestCase
     {
         yield [2, 3, 4]; // don't begin with 1
         yield [1, 3, 2]; // begins with 1, but don't follow each other
-        yield [1, 2 ,2]; // begins with 1, but has duplicates
+        yield [1, 2, 2]; // begins with 1, but has duplicates
     }
 
     public function testShouldCreateOpenEndedQuestion()
@@ -280,10 +280,10 @@ class CreateExerciseTest extends KernelTestCase
                             ['label' => 'yellow'],
                             ['label' => 'orange'],
                             ['label' => 'red'],
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ]);
 
         $this->exerciseId = $response->toArray()['id'];
@@ -307,10 +307,10 @@ class CreateExerciseTest extends KernelTestCase
                             ['isCorrect' => true, 'label' => 'yellow'],
                             ['isCorrect' => true, 'label' => 'orange'],
                             ['isCorrect' => true, 'label' => 'red'],
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ]);
 
         //Then
