@@ -24,7 +24,7 @@ class Exercise
     public const TYPE_OPEN_ENDED = 'OPEN_ENDED';
 
     /**
-     * @var \Ramsey\Uuid\UuidInterface
+     * @var string
      *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
@@ -139,21 +139,21 @@ class Exercise
                             'type' => new Assert\Required(new Assert\Choice([self::TYPE_MCQ, self::TYPE_OPEN_ENDED])),
                             'label' => new Assert\Required(new Assert\NotBlank()),
                             'choices' => new Assert\Optional([
-                                new Assert\Type(["type" => "array"]),
+                                new Assert\Type(['type' => 'array']),
                                 new Assert\All([
                                     new Assert\Collection([
                                         'fields' => [
                                             'isCorrect' => new Assert\Optional(new Assert\Type(['type' => 'boolean'])),
-                                            'label' => new Assert\Required(new Assert\NotBlank())
-                                        ]
-                                    ])
-                                ])
-                            ])
-                        ]
+                                            'label' => new Assert\Required(new Assert\NotBlank()),
+                                        ],
+                                    ]),
+                                ]),
+                            ]),
+                        ],
                     ]),
                     new MCQ(),
                     new OpenEnded(),
-                ])
+                ]),
             ]
         );
     }

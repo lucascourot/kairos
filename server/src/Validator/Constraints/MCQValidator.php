@@ -38,12 +38,12 @@ final class MCQValidator extends ConstraintValidator
             $isValidQuestion = false;
 
             foreach ($question['choices'] as $choice) {
-                if ($choice['isCorrect'] ?? false === true) {
+                if (($choice['isCorrect'] ?? false) === true) {
                     $isValidQuestion = true;
                 }
             }
 
-            if ($isValidQuestion === false) {
+            if (false === $isValidQuestion) {
                 $this->context->buildViolation($constraint->validQuestionRequired)->addViolation();
             }
         }

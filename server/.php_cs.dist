@@ -1,0 +1,17 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('var')
+    ->exclude('features')
+    ->exclude('config')
+    ->exclude('src/Migrations')
+    ->in(__DIR__)
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@Symfony' => true,
+        'array_syntax' => ['syntax' => 'short'],
+    ])
+    ->setFinder($finder)
+;
