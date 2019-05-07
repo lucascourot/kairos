@@ -268,16 +268,18 @@ class CreateExerciseTest extends KernelTestCase
     public function testShouldCreateFreeTextExercise()
     {
         //When
-        $response = $this->client->request('POST', 'api/exercise', [
+        $response = $this->client->request('POST', 'api/exercises', [
             'json' => [
                 'name' => 'test - exercise with free answer',
                 'questions' => [
-                    'type' => Exercise::TYPE_FREE,
-                    'label' => 'What color can be the sun ?',
-                    'choices' => [
-                        ['isCorrect' => true, 'label' => 'yellow'],
-                        ['isCorrect' => true, 'label' => 'orange'],
-                        ['isCorrect' => true, 'label' => 'red'],
+                    [
+                        'type' => Exercise::TYPE_FREE,
+                        'label' => 'What color can be the sun ?',
+                        'choices' => [
+                            ['isCorrect' => true, 'label' => 'yellow'],
+                            ['isCorrect' => true, 'label' => 'orange'],
+                            ['isCorrect' => true, 'label' => 'red'],
+                        ]
                     ]
                 ]
             ]
