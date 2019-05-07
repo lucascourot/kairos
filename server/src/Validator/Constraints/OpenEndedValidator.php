@@ -27,7 +27,8 @@ final class ValidAnswersValidator extends ConstraintValidator
             $isValidQuestion = true;
 
             foreach ($question['choices'] as $choice) {
-                if ($choice['isCorrect'] !== true) {
+                $keys = array_keys($choice);
+                if ($keys !== ['label']) {
                     $isValidQuestion = false;
                 }
             }
