@@ -22,7 +22,7 @@ final class QuestionPositionsValidator extends ConstraintValidator
 
         $questions = $value;
 
-        if (1 !== ($questions[0]['position'] ?? null)) {
+        if (($questions[0]['position'] ?? null) !== 1) {
             $this->context->buildViolation($constraint->shouldStartAtPositionOne)->addViolation();
         }
 
@@ -32,7 +32,7 @@ final class QuestionPositionsValidator extends ConstraintValidator
                 $this->context->buildViolation($constraint->shouldBeFollowingEachOther)->addViolation();
             }
 
-            ++$expectedPosition;
+            $expectedPosition++;
         }
     }
 }

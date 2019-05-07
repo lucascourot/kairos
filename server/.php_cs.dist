@@ -12,6 +12,15 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'no_unreachable_default_argument_value' => false,
+        'braces' => [
+            'allow_single_line_closure' => true,
+        ],
+        'heredoc_to_nowdoc' => false,
+        'phpdoc_summary' => false,
+        'increment_style' => ['style' => 'post'],
+        'yoda_style' => false,
+        'ordered_imports' => ['sort_algorithm' => 'alpha'],
     ])
     ->setFinder($finder)
 ;
