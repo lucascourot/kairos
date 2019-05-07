@@ -31,7 +31,7 @@ else
 endif
 
 .PHONY: behat
-behat: composer ## (PHP) Behavior tests
+behat: ## (PHP) Behavior tests
 	@echo
 ifneq ($(DOCKER_ENV),true)
 	$(RUN_IN_CONTAINER) $(MAKE) $@
@@ -39,33 +39,20 @@ else
 	php -d memory_limit=-1 ./vendor/bin/behat --format=progress
 endif
 
-.PHONY: check
-check: cs stan ## (PHP) Launch all lint tools. A good choice for pre-commit hook
+.PHONY: check-server
+check-server: cs stan ## (PHP) Launch all lint tools. A good choice for pre-commit hook
 
 .PHONY: cs
-cs: composer ## (PHP) Code style checker
-	@echo
-ifneq ($(DOCKER_ENV),true)
-ifeq ($(FORCE_LOCAL),true)
-	./vendor/bin/php-cs-fixer fix -v --dry-run --using-cache=no
-else
-	$(RUN_IN_CONTAINER) $(MAKE) $@
-endif
-else
-	./vendor/bin/php-cs-fixer fix -v --dry-run --using-cache=no
-endif
-
-.PHONY: dredd
-dredd: ## (PHP) Check API implementation
+cs: ## (PHP) Code style checker
 	@echo
 ifneq ($(DOCKER_ENV),true)
 	$(RUN_IN_CONTAINER) $(MAKE) $@
 else
-	dredd $(API_DESCRIPTION) http://127.0.0.1:8000 -r apiary -j apiaryApiKey:$(APIARY_TEST_KEY) -j apiaryApiName:$(APIARY_API_NAME) -g './bin/console server:run --env=$(APP_ENV)'
+	./vendor/bin/php-cs-fixer fix -v --dry-run --using-cache=no
 endif
 
 .PHONY: fix
-fix: composer ## (PHP) Code style fixer
+fix: ## (PHP) Code style fixer
 	@echo
 ifneq ($(DOCKER_ENV),true)
 	$(RUN_IN_CONTAINER) $(MAKE) $@
@@ -73,21 +60,12 @@ else
 	./vendor/bin/php-cs-fixer fix -v
 endif
 
-.PHONY: security
-security: composer ## (PHP) Check if application uses dependencies with known security vulnerabilities
-	@echo
-ifneq ($(DOCKER_ENV),true)
-	$(RUN_IN_CONTAINER) $(MAKE) $@
-else
-	./bin/console security:check
-endif
-
 .PHONY: shell
 shell: ## (Docker) Enter in app container
 	$(RUN_IN_CONTAINER) /bin/bash
 
 .PHONY: stan
-stan: composer ## (PHP) Static analysis
+stan: ## (PHP) Static analysis
 	@echo
 ifneq ($(DOCKER_ENV),true)
 	$(RUN_IN_CONTAINER) $(MAKE) $@
@@ -95,11 +73,11 @@ else
 	php -d memory_limit=-1 ./vendor/bin/phpstan analyse -l 7 public src translations
 endif
 
-.PHONY: test
-test: unit behat dredd ## (PHP) Launch all test tools
+.PHONY: test-server
+test-server: unit behat dredd ## (PHP) Launch all test tools
 
 .PHONY: unit
-unit: composer ## (PHP) Unit tests
+unit: ## (PHP) Unit tests
 	@echo
 ifneq ($(DOCKER_ENV),true)
 	$(RUN_IN_CONTAINER) $(MAKE) $@
