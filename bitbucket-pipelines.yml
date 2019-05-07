@@ -1,0 +1,76 @@
+image:
+  name: wakeonweb/php:7.2-fpm
+
+pipelines:
+  branches:
+    master:
+    - parallel:
+      - step:
+          caches:
+          - composer
+          name: Check code style
+          script:
+          - cd server
+          - composer install
+          - make cs
+      - step:
+          caches:
+          - composer
+          name: Run static analysis
+          script:
+          - cd server
+          - composer install
+          - make stan
+      - step:
+          caches:
+          - composer
+          name: Run unit tests
+          script:
+          - cd server
+          - composer install
+          - make unit
+      - step:
+          caches:
+          - composer
+          name: Validate schema
+          script:
+          - cd server
+          - composer install
+          - ./bin/console doctrine:schema:validate --skip-sync
+    '*/*':
+      - parallel:
+        - step:
+            caches:
+              - composer
+            name: Check code style
+            script:
+              - cd server
+              - composer install
+              - make cs
+        - step:
+            caches:
+              - composer
+            name: Run static analysis
+            script:
+              - cd server
+              - composer install
+              - make stan
+        - step:
+            caches:
+              - composer
+            name: Run unit tests
+            script:
+              - cd server
+              - composer install
+              - make unit
+        - step:
+            caches:
+              - composer
+            name: Validate schema
+            script:
+              - cd server
+              - composer install
+              - ./bin/console doctrine:schema:validate --skip-sync
+
+options:
+  docker: true
