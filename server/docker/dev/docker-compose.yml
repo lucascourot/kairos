@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+    app:
+        build:
+            context: ./dockerfiles
+        container_name: kairos
+        restart: always
+        user: "root"
+        env_file:
+            - ../../.env
+        volumes:
+            - "../../:/var/www/project:cached"
+            - "~/.composer:/root/.composer"
+        networks:
+            - dev
+        working_dir: /var/www/project
+        labels:
+            - "traefik.backend=kairos.apache2"
+            - "traefik.frontend.rule=Host:kairos.wow.local"
+            - "traefik.port=8000"
+
+networks:
+    dev:
+        external:
+            name: wowdockerenv_dev
