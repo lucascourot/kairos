@@ -265,7 +265,7 @@ class CreateExerciseTest extends KernelTestCase
         yield [1, 2 ,2]; // begins with 1, but has duplicates
     }
 
-    public function testShouldCreateOpenEndedExercise()
+    public function testShouldCreateOpenEndedQuestion()
     {
         //When
         $response = $this->client->request('POST', 'api/exercises', [
@@ -292,7 +292,7 @@ class CreateExerciseTest extends KernelTestCase
         $this->assertSame(201, $response->getStatusCode());
     }
 
-    public function testShouldNotCreateOpenEndedExerciseWithSomeExtraChoiceFields()
+    public function testShouldNotCreateOpenEndedQuestionWithSomeExtraChoiceFields()
     {
         //When
         $response = $this->client->request('POST', 'api/exercises', [
