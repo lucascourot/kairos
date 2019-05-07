@@ -21,7 +21,7 @@ class Exercise
 {
     /** @var string */
     public const TYPE_MCQ = 'MCQ';
-    public const TYPE_FREE = 'FREE';
+    public const TYPE_OPEN = 'OPEN';
 
     /**
      * @var \Ramsey\Uuid\UuidInterface
