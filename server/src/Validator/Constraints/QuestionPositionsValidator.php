@@ -9,15 +9,15 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 /**
  * @Annotation
  */
-final class QuestionValidator extends ConstraintValidator
+final class QuestionPositionsValidator extends ConstraintValidator
 {
     /**
      * @param mixed $value
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof Question) {
-            throw new UnexpectedTypeException($constraint, Question::class);
+        if (!$constraint instanceof QuestionPositions) {
+            throw new UnexpectedTypeException($constraint, QuestionPositions::class);
         }
 
         $questions = $value;

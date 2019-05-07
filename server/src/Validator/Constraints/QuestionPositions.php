@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class Question extends Constraint
+class QuestionPositions extends Constraint
 {
     public $shouldStartAtPositionOne = 'The position of the first question should always be 1.';
 

@@ -5,7 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Validator\Constraints\MCQ;
-use App\Validator\Constraints\Question;
+use App\Validator\Constraints\QuestionPositions;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -129,7 +129,7 @@ class Exercise
 
         $metadata->addPropertyConstraints(
             'questions', [
-                new Question(),
+                new QuestionPositions(),
                 new Assert\All([
                     new Assert\Collection([
                         'fields' => [

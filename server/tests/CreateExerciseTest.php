@@ -49,7 +49,7 @@ class CreateExerciseTest extends KernelTestCase
             ]
         ]);
 
-        $this->exerciseId = $response->toArray(false)['id'];
+        $this->exerciseId = $response->toArray()['id'];
 
         // Then
         $this->assertSame(201, $response->getStatusCode());
