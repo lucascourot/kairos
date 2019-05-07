@@ -265,7 +265,7 @@ class CreateExerciseTest extends KernelTestCase
         yield [1, 2 ,2]; // begins with 1, but has duplicates
     }
 
-    public function testShouldCreateFreeTextExercise()
+    public function testShouldCreateOpenEndedExercise()
     {
         //When
         $response = $this->client->request('POST', 'api/exercises', [
@@ -291,7 +291,7 @@ class CreateExerciseTest extends KernelTestCase
         $this->assertSame(201, $response->getStatusCode());
     }
 
-    public function testShouldNotCreateFreeTextExerciseWithSomeIncorrectAnswer()
+    public function testShouldNotCreateOpenEndedExerciseWithSomeExtraChoiceFields()
     {
         //When
         $response = $this->client->request('POST', 'api/exercises', [
@@ -299,12 +299,12 @@ class CreateExerciseTest extends KernelTestCase
                 'name' => 'test - exercise with free answer',
                 'questions' => [
                     [
-                        'type' => Exercise::TYPE_FREE,
+                        'type' => 'OPEN',
                         'label' => 'What color can be the sun ?',
                         'choices' => [
-                            ['label' => 'yellow'],
-                            ['label' => 'orange'],
-                            ['label' => 'red'],
+                            ['isCorrect' => true, 'label' => 'yellow'],
+                            ['isCorrect' => true, 'label' => 'orange'],
+                            ['isCorrect' => true, 'label' => 'red'],
                         ]
                     ]
                 ]
