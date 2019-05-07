@@ -19,7 +19,6 @@ else
 endif
 
 .DEFAULT_GOAL := help
-DOCKER_ENV    := $(shell test -f /.dockerenv && echo -n true)
 RUN_IN_CONTAINER := docker exec -it ${PROJECT_NAME}
 SUBCOMMAND = $(subst +,-, $(filter-out $@,$(MAKECMDGOALS)))
 
@@ -27,5 +26,5 @@ SUBCOMMAND = $(subst +,-, $(filter-out $@,$(MAKECMDGOALS)))
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | cut -d: -f2- | sort -t: -k 2,2 | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-include ./server/makefiles/*.mk
 include ./makefiles/*.mk
+include server/Makefile

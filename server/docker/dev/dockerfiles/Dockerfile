@@ -9,7 +9,7 @@ ENV APP_ENV=dev \
 USER root
 RUN apt-get update || apt-get update
 
-RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql  && docker-php-ext-install pdo pdo_pgsql pgsql zip && docker-php-ext-enable amqp
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql  && docker-php-ext-install pdo pdo_pgsql pgsql && docker-php-ext-enable amqp
 
 WORKDIR /var/www/project
 
