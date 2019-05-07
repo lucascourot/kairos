@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class ValidAnswers extends Constraint
+class OpenEnded extends Constraint
 {
-    public $allCorrectRequired = 'Only correct answers are allowed for Free text exercises';
+    public $onlyLabelField = 'For Open ended exercise, choices should only implement "label" field';
 }

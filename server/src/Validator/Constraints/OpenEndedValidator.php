@@ -10,20 +10,20 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 /**
  * @Annotation
  */
-final class ValidAnswersValidator extends ConstraintValidator
+final class OpenEndedValidator extends ConstraintValidator
 {
     /**
      * @param mixed $value
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof ValidAnswers) {
+        if (!$constraint instanceof OpenEnded) {
             throw new UnexpectedTypeException($constraint, MCQ::class);
         }
 
         $question = $value;
 
-        if (isset($question['type'], $question['choices']) && Exercise::TYPE_FREE === strtoupper($question['type'])) {
+        if (isset($question['type'], $question['choices']) && Exercise::TYPE_OPEN === strtoupper($question['type'])) {
             $isValidQuestion = true;
 
             foreach ($question['choices'] as $choice) {
@@ -34,7 +34,7 @@ final class ValidAnswersValidator extends ConstraintValidator
             }
 
             if ($isValidQuestion === false) {
-                $this->context->buildViolation($constraint->allCorrectRequired)->addViolation();
+                $this->context->buildViolation($constraint->onlyLabelField)->addViolation();
             }
         }
     }
