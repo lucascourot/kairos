@@ -136,14 +136,14 @@ class Exercise
                     new Assert\Collection([
                         'fields' => [
                             'position' => new Assert\Required(new Assert\Type(['type' => 'integer'])),
-                            'type' => new Assert\Required(new Assert\Choice([self::TYPE_MCQ])),
+                            'type' => new Assert\Required(new Assert\Choice([self::TYPE_MCQ, self::TYPE_OPEN])),
                             'label' => new Assert\Required(new Assert\NotBlank()),
                             'choices' => new Assert\Optional([
                                 new Assert\Type(["type" => "array"]),
                                 new Assert\All([
                                     new Assert\Collection([
                                         'fields' => [
-                                            'isCorrect' => new Assert\Required(new Assert\Type(['type' => 'boolean'])),
+                                            'isCorrect' => new Assert\Optional(new Assert\Type(['type' => 'boolean'])),
                                             'label' => new Assert\Required(new Assert\NotBlank())
                                         ]
                                     ])
