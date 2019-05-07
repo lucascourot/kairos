@@ -6,7 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Validator\Constraints\MCQ;
 use App\Validator\Constraints\QuestionPositions;
-use App\Validator\Constraints\ValidAnswers;
+use App\Validator\Constraints\OpenEnded;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -152,7 +152,7 @@ class Exercise
                         ]
                     ]),
                     new MCQ(),
-                    new ValidAnswers(),
+                    new OpenEnded(),
                 ])
             ]
         );
