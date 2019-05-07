@@ -9,5 +9,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class OpenEnded extends Constraint
 {
-    public $onlyLabelField = 'For Open ended exercise, choices should only implement "label" field';
+    public $onlyLabelField = 'For Open ended question, choices should only implement "label" field';
 }
