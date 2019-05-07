@@ -35,6 +35,7 @@ class CreateExerciseTest extends KernelTestCase
                 'name' => 'test - exercise with MCQ',
                 'questions' => [
                     [
+                        'position' => 1,
                         'type' => Exercise::TYPE_MCQ,
                         'label' => 'What\'s the sun color?',
                         'choices' => [
@@ -45,10 +46,10 @@ class CreateExerciseTest extends KernelTestCase
                         ],
                     ],
                 ],
-            ],
+            ]
         ]);
 
-        $this->exerciseId = $response->toArray()['id'];
+        $this->exerciseId = $response->toArray(false)['id'];
 
         // Then
         $this->assertSame(201, $response->getStatusCode());
@@ -62,6 +63,7 @@ class CreateExerciseTest extends KernelTestCase
                 'name' => 'test - exercise with MCQ but no good choice',
                 'questions' => [
                     [
+                        'position' => 1,
                         'type' => Exercise::TYPE_MCQ,
                         'label' => 'Where does the rain come from?',
                         'choices' => [
@@ -72,6 +74,7 @@ class CreateExerciseTest extends KernelTestCase
                         ],
                     ],
                     [
+                        'position' => 2,
                         'type' => Exercise::TYPE_MCQ,
                         'label' => 'Where does rice come from?',
                         'choices' => [
@@ -97,6 +100,7 @@ class CreateExerciseTest extends KernelTestCase
                 'name' => 'test - invalid exercise',
                 'questions' => [
                     [
+                        'position' => 1,
                         'type' => '',
                         'label' => '',
                         'choices' => [],
@@ -123,6 +127,7 @@ class CreateExerciseTest extends KernelTestCase
                 'name' => 'test - exercise questions should have valid choices',
                 'questions' => [
                     [
+                        'position' => 1,
                         'type' => Exercise::TYPE_MCQ,
                         'label' => 'What is the correct answer?',
                         'choices' => [
@@ -148,10 +153,115 @@ class CreateExerciseTest extends KernelTestCase
         ], $errorMessages);
     }
 
+    public function testShouldAddPositionNumberOnQuestions()
+    {
+        // When
+        $response = $this->client->request('POST', '/api/exercises', [
+            'json' => [
+                'name' => 'test - questions should have a position number',
+                'questions' => [
+                    [
+                        'position' => 1,
+                        'type' => Exercise::TYPE_MCQ,
+                        'label' => 'Where does the rain come from?',
+                        'choices' => [
+                            ['isCorrect' => false, 'label' => 'the sun'],
+                            ['isCorrect' => false, 'label' => 'the birds'],
+                            ['isCorrect' => false, 'label' => 'the roof'],
+                            ['isCorrect' => true, 'label' => 'the sky'],
+                        ],
+                    ],
+                    [
+                        'position' => 2,
+                        'type' => Exercise::TYPE_MCQ,
+                        'label' => 'Where does rice come from?',
+                        'choices' => [
+                            ['isCorrect' => true, 'label' => 'china'],
+                            ['isCorrect' => false, 'label' => 'russia'],
+                            ['isCorrect' => false, 'label' => 'france'],
+                            ['isCorrect' => false, 'label' => 'usa'],
+                        ],
+                    ],
+                    [
+                        'position' => 3,
+                        'type' => Exercise::TYPE_MCQ,
+                        'label' => 'What\'s the sun color?',
+                        'choices' => [
+                            ['isCorrect' => true, 'label' => 'yellow'],
+                            ['isCorrect' => false, 'label' => 'blue'],
+                            ['isCorrect' => false, 'label' => 'green'],
+                            ['isCorrect' => false, 'label' => 'pink'],
+                        ],
+                    ],
+                ],
+            ]
+        ]);
+
+        // Then
+        $this->assertSame(201, $response->getStatusCode());
+    }
+
+    /**
+     * @dataProvider invalidQuestionPositionProvider
+     */
+    public function testShouldHavePositionThatFollowEachOther($position1, $position2, $position3)
+    {
+        $response = $this->client->request('POST', '/api/exercises', [
+            'json' => [
+                'name' => 'test - questions should have a positions that follow each other',
+                'questions' => [
+                    [
+                        'position' => $position1,
+                        'type' => Exercise::TYPE_MCQ,
+                        'label' => 'What\'s the sun color?',
+                        'choices' => [
+                            ['isCorrect' => true, 'label' => 'yellow'],
+                            ['isCorrect' => false, 'label' => 'blue'],
+                            ['isCorrect' => false, 'label' => 'green'],
+                            ['isCorrect' => false, 'label' => 'pink'],
+                        ],
+                    ],
+                    [
+                        'position' => $position2,
+                        'type' => Exercise::TYPE_MCQ,
+                        'label' => 'Where does the rain come from?',
+                        'choices' => [
+                            ['isCorrect' => false, 'label' => 'the sun'],
+                            ['isCorrect' => false, 'label' => 'the birds'],
+                            ['isCorrect' => false, 'label' => 'the roof'],
+                            ['isCorrect' => true, 'label' => 'the sky'],
+                        ],
+                    ],
+                    [
+                        'position' => $position3,
+                        'type' => Exercise::TYPE_MCQ,
+                        'label' => 'Where does rice come from?',
+                        'choices' => [
+                            ['isCorrect' => true, 'label' => 'china'],
+                            ['isCorrect' => false, 'label' => 'russia'],
+                            ['isCorrect' => false, 'label' => 'france'],
+                            ['isCorrect' => false, 'label' => 'usa'],
+                        ],
+                    ],
+                ],
+            ]
+        ]);
+
+        // Then
+        $this->assertSame(400, $response->getStatusCode());
+    }
+
     protected function tearDown(): void
     {
         if ($this->exerciseId) {
-            $this->client->request('DELETE', '/api/exercises/'.$this->exerciseId);
+            $this->client->request('DELETE', '/api/exercises/' . $this->exerciseId);
         }
+    }
+
+    public function invalidQuestionPositionProvider()
+    {
+        yield [2, 3, 4]; // don't begin with 1
+        yield [1, 3, 2]; // begins with 1, but don't follow each other
+        yield [1, 2 ,2]; // begins with 1, but has duplicates
     }
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Validator\Constraints\MCQ;
+use App\Validator\Constraints\Question;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -126,11 +127,14 @@ class Exercise
     {
         $metadata->addPropertyConstraint('name', new Assert\NotBlank());
 
-        $metadata->addPropertyConstraint(
+        $metadata->addPropertyConstraints(
             'questions',
+            [
+            new Question(),
             new Assert\All([
                 new Assert\Collection([
                     'fields' => [
+                        'position' => new Assert\Required(new Assert\Type(['type' => 'integer'])),
                         'type' => new Assert\Required(new Assert\Choice(['MCQ'])),
                         'label' => new Assert\Required(new Assert\NotBlank()),
                         'choices' => new Assert\Optional([
@@ -148,6 +152,7 @@ class Exercise
                 ]),
                 new MCQ(),
             ])
+            ]
         );
     }
 }
