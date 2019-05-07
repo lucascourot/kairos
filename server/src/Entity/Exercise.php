@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Validator\Constraints\MCQ;
 use App\Validator\Constraints\QuestionPositions;
+use App\Validator\Constraints\OpenEnded;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -20,6 +21,7 @@ class Exercise
 {
     /** @var string */
     public const TYPE_MCQ = 'MCQ';
+    public const TYPE_OPEN_ENDED = 'OPEN_ENDED';
 
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -134,14 +136,14 @@ class Exercise
                     new Assert\Collection([
                         'fields' => [
                             'position' => new Assert\Required(new Assert\Type(['type' => 'integer'])),
-                            'type' => new Assert\Required(new Assert\Choice([self::TYPE_MCQ])),
+                            'type' => new Assert\Required(new Assert\Choice([self::TYPE_MCQ, self::TYPE_OPEN_ENDED])),
                             'label' => new Assert\Required(new Assert\NotBlank()),
                             'choices' => new Assert\Optional([
                                 new Assert\Type(["type" => "array"]),
                                 new Assert\All([
                                     new Assert\Collection([
                                         'fields' => [
-                                            'isCorrect' => new Assert\Required(new Assert\Type(['type' => 'boolean'])),
+                                            'isCorrect' => new Assert\Optional(new Assert\Type(['type' => 'boolean'])),
                                             'label' => new Assert\Required(new Assert\NotBlank())
                                         ]
                                     ])
@@ -150,6 +152,7 @@ class Exercise
                         ]
                     ]),
                     new MCQ(),
+                    new OpenEnded(),
                 ])
             ]
         );

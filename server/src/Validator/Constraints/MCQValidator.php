@@ -24,6 +24,17 @@ final class MCQValidator extends ConstraintValidator
         $question = $value;
 
         if (isset($question['type'], $question['choices']) && Exercise::TYPE_MCQ === strtoupper($question['type'])) {
+            $missingField = false;
+
+            foreach ($question['choices'] as $choice) {
+                if (!isset($choice['isCorrect'])) {
+                    $this->context->buildViolation($constraint->isCorrectFieldMissing)->addViolation();
+                    $missingField = true;
+                }
+            }
+
+            if ($missingField) {return;}
+
             $isValidQuestion = false;
 
             foreach ($question['choices'] as $choice) {

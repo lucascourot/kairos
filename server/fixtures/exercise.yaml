@@ -48,3 +48,20 @@ App\Entity\Exercise:
             }
           ]
         }
+      - {
+          position: 3,
+          type: "OPEN_ENDED",
+          label: "What colors can take the sun ?",
+          choices: [
+              {
+                  label: "red"
+              },
+              {
+
+                  label: "orange"
+              },
+              {
+                  label: "yellow"
+              }
+          ]
+      }

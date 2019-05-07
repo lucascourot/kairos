@@ -46,7 +46,7 @@ class CreateExerciseTest extends KernelTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ]);
 
         $this->exerciseId = $response->toArray()['id'];
@@ -263,5 +263,57 @@ class CreateExerciseTest extends KernelTestCase
         yield [2, 3, 4]; // don't begin with 1
         yield [1, 3, 2]; // begins with 1, but don't follow each other
         yield [1, 2 ,2]; // begins with 1, but has duplicates
+    }
+
+    public function testShouldCreateOpenEndedQuestion()
+    {
+        //When
+        $response = $this->client->request('POST', 'api/exercises', [
+            'json' => [
+                'name' => 'test - exercise with free answer',
+                'questions' => [
+                    [
+                        'position' => 1,
+                        'type' => Exercise::TYPE_OPEN_ENDED,
+                        'label' => 'What color can be the sun ?',
+                        'choices' => [
+                            ['label' => 'yellow'],
+                            ['label' => 'orange'],
+                            ['label' => 'red'],
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        $this->exerciseId = $response->toArray()['id'];
+
+        //Then
+        $this->assertSame(201, $response->getStatusCode());
+    }
+
+    public function testShouldNotCreateOpenEndedQuestionWithSomeExtraChoiceFields()
+    {
+        //When
+        $response = $this->client->request('POST', 'api/exercises', [
+            'json' => [
+                'name' => 'test - exercise with free answer',
+                'questions' => [
+                    [
+                        'position' => 1,
+                        'type' => Exercise::TYPE_OPEN_ENDED,
+                        'label' => 'What color can be the sun ?',
+                        'choices' => [
+                            ['isCorrect' => true, 'label' => 'yellow'],
+                            ['isCorrect' => true, 'label' => 'orange'],
+                            ['isCorrect' => true, 'label' => 'red'],
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        //Then
+        $this->assertSame(400, $response->getStatusCode());
     }
 }
