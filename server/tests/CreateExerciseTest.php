@@ -290,4 +290,30 @@ class CreateExerciseTest extends KernelTestCase
         //Then
         $this->assertSame(201, $response->getStatusCode());
     }
+
+    public function testShouldNotCreateFreeTextExerciseWithSomeIncorrectAnswer()
+    {
+        //When
+        $response = $this->client->request('POST', 'api/exercises', [
+            'json' => [
+                'name' => 'test - exercise with free answer',
+                'questions' => [
+                    [
+                        'type' => Exercise::TYPE_FREE,
+                        'label' => 'What color can be the sun ?',
+                        'choices' => [
+                            ['isCorrect' => false, 'label' => 'yellow'],
+                            ['isCorrect' => true, 'label' => 'orange'],
+                            ['isCorrect' => true, 'label' => 'red'],
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        $this->exerciseId = $response->toArray()['id'];
+
+        //Then
+        $this->assertSame(201, $response->getStatusCode());
+    }
 }
