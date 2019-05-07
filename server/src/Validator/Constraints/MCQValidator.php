@@ -4,7 +4,6 @@ namespace App\Validator\Constraints;
 
 use App\Entity\Exercise;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
