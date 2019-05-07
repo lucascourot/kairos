@@ -280,10 +280,10 @@ class CreateExerciseTest extends KernelTestCase
                             ['label' => 'yellow'],
                             ['label' => 'orange'],
                             ['label' => 'red'],
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ]);
 
         $this->exerciseId = $response->toArray()['id'];
@@ -307,10 +307,10 @@ class CreateExerciseTest extends KernelTestCase
                             ['isCorrect' => true, 'label' => 'yellow'],
                             ['isCorrect' => true, 'label' => 'orange'],
                             ['isCorrect' => true, 'label' => 'red'],
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ]);
 
         //Then

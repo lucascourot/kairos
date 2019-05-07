@@ -33,7 +33,9 @@ final class MCQValidator extends ConstraintValidator
                 }
             }
 
-            if ($missingField) {return;}
+            if ($missingField) {
+                return;
+            }
 
             $isValidQuestion = false;
 
