@@ -274,7 +274,7 @@ class CreateExerciseTest extends KernelTestCase
                 'questions' => [
                     [
                         'position' => 1,
-                        'type' => Exercise::TYPE_OPEN,
+                        'type' => Exercise::TYPE_OPEN_ENDED,
                         'label' => 'What color can be the sun ?',
                         'choices' => [
                             ['label' => 'yellow'],
@@ -301,7 +301,7 @@ class CreateExerciseTest extends KernelTestCase
                 'questions' => [
                     [
                         'position' => 1,
-                        'type' => Exercise::TYPE_OPEN,
+                        'type' => Exercise::TYPE_OPEN_ENDED,
                         'label' => 'What color can be the sun ?',
                         'choices' => [
                             ['isCorrect' => true, 'label' => 'yellow'],

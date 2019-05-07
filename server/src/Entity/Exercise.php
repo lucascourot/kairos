@@ -21,7 +21,7 @@ class Exercise
 {
     /** @var string */
     public const TYPE_MCQ = 'MCQ';
-    public const TYPE_OPEN = 'OPEN';
+    public const TYPE_OPEN_ENDED = 'OPEN';
 
     /**
      * @var \Ramsey\Uuid\UuidInterface
@@ -136,7 +136,7 @@ class Exercise
                     new Assert\Collection([
                         'fields' => [
                             'position' => new Assert\Required(new Assert\Type(['type' => 'integer'])),
-                            'type' => new Assert\Required(new Assert\Choice([self::TYPE_MCQ, self::TYPE_OPEN])),
+                            'type' => new Assert\Required(new Assert\Choice([self::TYPE_MCQ, self::TYPE_OPEN_ENDED])),
                             'label' => new Assert\Required(new Assert\NotBlank()),
                             'choices' => new Assert\Optional([
                                 new Assert\Type(["type" => "array"]),

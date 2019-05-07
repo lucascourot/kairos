@@ -23,7 +23,7 @@ final class OpenEndedValidator extends ConstraintValidator
 
         $question = $value;
 
-        if (isset($question['type'], $question['choices']) && Exercise::TYPE_OPEN === strtoupper($question['type'])) {
+        if (isset($question['type'], $question['choices']) && Exercise::TYPE_OPEN_ENDED === strtoupper($question['type'])) {
             $isValidQuestion = true;
 
             foreach ($question['choices'] as $choice) {
