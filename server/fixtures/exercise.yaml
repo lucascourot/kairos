@@ -3,6 +3,7 @@ App\Entity\Exercise:
     name: <sentence(4)>
     questions:
       - {
+          position: 1,
           type: "MCQ",
           label: "What's your name?",
           choices: [
@@ -25,6 +26,7 @@ App\Entity\Exercise:
           ]
         }
       - {
+          position: 2,
           type: "MCQ",
           label: "What's the sun color?",
           choices: [
