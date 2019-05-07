@@ -27,7 +27,7 @@ final class MCQValidator extends ConstraintValidator
             $missingField = false;
 
             foreach ($question['choices'] as $choice) {
-                if (!array_key_exists('isCorrect', $choice) || null === $choice['isCorrect']) {
+                if (!isset($choice['isCorrect'])) {
                     $this->context->buildViolation($constraint->isCorrectFieldMissing)->addViolation();
                     $missingField = true;
                 }
