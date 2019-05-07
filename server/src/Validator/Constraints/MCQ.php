@@ -10,4 +10,6 @@ use Symfony\Component\Validator\Constraint;
 class MCQ extends Constraint
 {
     public $validQuestionRequired = 'The MCQ must have at least one valid choice.';
+
+    public $isCorrectFieldMissing = 'This field is missing.';
 }

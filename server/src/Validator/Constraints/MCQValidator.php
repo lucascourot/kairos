@@ -4,6 +4,7 @@ namespace App\Validator\Constraints;
 
 use App\Entity\Exercise;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -24,6 +25,17 @@ final class MCQValidator extends ConstraintValidator
         $question = $value;
 
         if (isset($question['type'], $question['choices']) && Exercise::TYPE_MCQ === strtoupper($question['type'])) {
+            $missingField = false;
+
+            foreach ($question['choices'] as $choice) {
+                if (!array_key_exists('isCorrect', $choice) || null === $choice['isCorrect']) {
+                    $this->context->buildViolation($constraint->isCorrectFieldMissing)->addViolation();
+                    $missingField = true;
+                }
+            }
+
+            if ($missingField) {return;}
+
             $isValidQuestion = false;
 
             foreach ($question['choices'] as $choice) {
