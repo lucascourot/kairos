@@ -28,7 +28,7 @@ pipelines:
           script:
           - cd server
           - composer install
-          - ./bin/console s:r
+          - ./bin/console server:start
           - make unit
       - step:
           caches:
@@ -63,7 +63,7 @@ pipelines:
             script:
               - cd server
               - composer install
-              - ./bin/console s:r
+              - ./bin/console server:start
               - make unit
         - step:
             caches:
