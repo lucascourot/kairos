@@ -42,6 +42,23 @@ pipelines:
           - cd server
           - composer install
           - ./bin/console doctrine:schema:validate --skip-sync
+#      - step:
+#          name: Build and push docker image
+#          script:
+#              - make docker-login
+#              - make APP_ENV=prod APP_DEBUG=0 APP_IMAGE_TAG=${BITBUCKET_COMMIT} docker-build
+#              - make APP_IMAGE_TAG=${BITBUCKET_COMMIT} docker-push
+#      - step:
+#          deployment: staging
+#          name: Deploy to staging
+#          script:
+#              - apk add --update --no-cache jq
+#              - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+#              - chmod +x ./kubectl
+#              - echo ${KUBECTL_CONFIG} | base64 -d > ./kubeconfig.yaml
+#              - ./kubectl get job kairos-migrations -n flycash --kubeconfig=./kubeconfig.yaml -o json | jq 'del(.spec.selector)' | jq 'del(.spec.template.metadata.labels)' | jq 'del(.spec.template.metadata.annotations)' | echo $(eval jq '.spec.template.spec.containers[0].image=\"wakeonweb/lffc-kairos:${BITBUCKET_COMMIT}\"') > kairos-migrations.json
+#              - ./kubectl replace --force -f ./kairos-migrations.json --kubeconfig=./kubeconfig.yaml
+#              - ./kubectl set image deployment/kairos -n flycash --kubeconfig=./kubeconfig.yaml kairos=wakeonweb/kairos:$BITBUCKET_COMMIT
     '*/*':
       - parallel:
         - step:
@@ -81,6 +98,17 @@ pipelines:
               - cd server
               - composer install
               - ./bin/console doctrine:schema:validate --skip-sync
+
+#    tags:
+#      # deploy on PPROD
+#      "*":
+#        - parallel:
+#            - step:
+#                name: Build and push docker image
+#                script:
+#                    - make docker-login
+#                    - make APP_ENV=prod APP_DEBUG=0 APP_IMAGE_TAG=${BITBUCKET_TAG} docker-build
+#                    - make APP_IMAGE_TAG=${BITBUCKET_TAG} docker-push
 
 definitions:
   services:
