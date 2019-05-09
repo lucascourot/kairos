@@ -28,8 +28,12 @@ pipelines:
           script:
           - cd server
           - composer install
+          - ./bin/console d:d:c
+          - ./bin/console d:m:m  --n
           - ./bin/console server:start
           - make unit
+          services:
+          - db
       - step:
           caches:
           - composer
@@ -63,8 +67,12 @@ pipelines:
             script:
               - cd server
               - composer install
+              - ./bin/console d:d:c
+              - ./bin/console d:m:m  --n
               - ./bin/console server:start
               - make unit
+            services:
+              - db
         - step:
             caches:
               - composer
@@ -74,5 +82,9 @@ pipelines:
               - composer install
               - ./bin/console doctrine:schema:validate --skip-sync
 
+definitions:
+  services:
+    db:
+      image: postgres:10
 options:
   docker: true
