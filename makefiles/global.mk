@@ -23,8 +23,8 @@ docker-login:
 
 docker-push: docker-push-server
 
-test: test-server ## run all test
+test: test-server ## run all tests
 
-check: check-server ## run all check
+check: check-server ## run all checks
 
 install: start composer database ## install project with all dependencies
