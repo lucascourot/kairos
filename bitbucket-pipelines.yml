@@ -29,7 +29,7 @@ pipelines:
           - cd server
           - composer install
           - ./bin/console d:d:c
-          - ./bin/console d:m:m  --n
+          - ./bin/console d:m:m -n
           - ./bin/console server:start
           - make unit
           services:
@@ -68,7 +68,7 @@ pipelines:
               - cd server
               - composer install
               - ./bin/console d:d:c
-              - ./bin/console d:m:m  --n
+              - ./bin/console d:m:m -n
               - ./bin/console server:start
               - make unit
             services:
