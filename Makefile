@@ -1,12 +1,5 @@
 #!make
-ENV_FILE_EXISTS=$(shell [ -f .env ] && echo 1 || echo 0)
-ifneq ($(CI), true)
-ifeq ($(ENV_FILE_EXISTS), 0)
-    $(info Creating default .env file from server/.env)
-    $(shell cp server/.env .env)
-endif
 include .env
-endif
 
 OS=$(shell uname)
 

@@ -14,12 +14,12 @@ alias: ## (Generic) Show some useful aliases to create
 	@echo
 
 .PHONY: database
-database:
+database: ## (PHP) remove, create & run database migrations
 	@echo
 ifneq ($(DOCKER_ENV),true)
 	$(RUN_IN_CONTAINER) $(MAKE) $@
 else
-	./bin/console d:d:d --force && ./bin/console d:d:c && ./bin/console d:m:m --no-interaction
+	./bin/console d:d:d --force --if-exists && ./bin/console d:d:c && ./bin/console d:m:m --no-interaction
 endif
 
 .PHONY: behat
@@ -77,7 +77,8 @@ else
 	./vendor/bin/phpunit
 endif
 
-composer:
+.PHONY: composer
+composer: ## (PHP) Vendor install
 	@echo
 ifneq ($(DOCKER_ENV),true)
 	$(RUN_IN_CONTAINER) $(MAKE) $@

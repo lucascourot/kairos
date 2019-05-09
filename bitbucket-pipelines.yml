@@ -28,8 +28,7 @@ pipelines:
           script:
           - cd server
           - composer install
-          - ./bin/console d:d:c
-          - ./bin/console d:m:m -n
+          - make database
           - ./bin/console server:start
           - make unit
           services:
@@ -84,8 +83,7 @@ pipelines:
             script:
               - cd server
               - composer install
-              - ./bin/console d:d:c
-              - ./bin/console d:m:m -n
+              - make database
               - ./bin/console server:start
               - make unit
             services:
