@@ -3,13 +3,13 @@
 
 # All
 
-start: start-server
+start: start-server ## start all services
 
-stop: stop-server
+stop: stop-server ## stop all services
 
-restart: stop-server start-server
+restart: stop-server start-server ## restart all services
 
-recreate: recreate-server
+recreate: recreate-server ## recreate all services
 
 # Prod
 docker-images: docker-images-server
@@ -23,6 +23,8 @@ docker-login:
 
 docker-push: docker-push-server
 
-test: test-server
+test: test-server ## run all tests
 
-check: check-server
+check: check-server ## run all checks
+
+install: start composer database ## install project with all dependencies

@@ -14,22 +14,18 @@ This is a R&D project developed by WakeOnWeb (WoW). It should be used for practi
    * MCQ (Multiple Choice Question(s))
    * Open-Ended Response
  
+ * Result
+ 
  * Classroom
  
 ## Requirements
 Ensure you have a postgreSql server running (wow-docker-env is recommended)
 
 ## Getting started
-- Update your **DATABASE_URL** in your .env*.local file 
+- Install the project 
         
-        DATABASE_URL=postgresql://[user]:[password]@[serverIp]:[port]/kairos
-- Start your docker container
-        
-        make start        
-- Install project dependencies
-        
-        make shell
-        composer install
+        make install
+- Open swagger at: http://kairos.wow.localhost/api
 - Run tests
     
     - Copy test env file
