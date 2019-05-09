@@ -1,0 +1,90 @@
+image:
+  name: wakeonweb/php:7.2-fpm
+
+pipelines:
+  branches:
+    master:
+    - parallel:
+      - step:
+          caches:
+          - composer
+          name: Check code style
+          script:
+          - cd server
+          - composer install
+          - make cs
+      - step:
+          caches:
+          - composer
+          name: Run static analysis
+          script:
+          - cd server
+          - composer install
+          - make stan
+      - step:
+          caches:
+          - composer
+          name: Run unit tests
+          script:
+          - cd server
+          - composer install
+          - ./bin/console d:d:c
+          - ./bin/console d:m:m -n
+          - ./bin/console server:start
+          - make unit
+          services:
+          - db
+      - step:
+          caches:
+          - composer
+          name: Validate schema
+          script:
+          - cd server
+          - composer install
+          - ./bin/console doctrine:schema:validate --skip-sync
+    '*/*':
+      - parallel:
+        - step:
+            caches:
+              - composer
+            name: Check code style
+            script:
+              - cd server
+              - composer install
+              - make cs
+        - step:
+            caches:
+              - composer
+            name: Run static analysis
+            script:
+              - cd server
+              - composer install
+              - make stan
+        - step:
+            caches:
+              - composer
+            name: Run unit tests
+            script:
+              - cd server
+              - composer install
+              - ./bin/console d:d:c
+              - ./bin/console d:m:m -n
+              - ./bin/console server:start
+              - make unit
+            services:
+              - db
+        - step:
+            caches:
+              - composer
+            name: Validate schema
+            script:
+              - cd server
+              - composer install
+              - ./bin/console doctrine:schema:validate --skip-sync
+
+definitions:
+  services:
+    db:
+      image: postgres:10
+options:
+  docker: true

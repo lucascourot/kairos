@@ -19,7 +19,8 @@
         "symfony/http-client": "^4.2@dev",
         "symfony/translation": "4.2.*",
         "symfony/var-dumper": "4.2.*",
-        "symfony/yaml": "4.2.*"
+        "symfony/yaml": "4.2.*",
+        "symfony/web-server-bundle": "4.2.*"
     },
     "config": {
         "preferred-install": {
@@ -68,7 +69,6 @@
     },
     "require-dev": {
         "hautelook/alice-bundle": "^2.5",
-        "symfony/maker-bundle": "^1.11",
-        "symfony/web-server-bundle": "4.2.*"
+        "symfony/maker-bundle": "^1.11"
     }
 }

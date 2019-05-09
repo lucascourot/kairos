@@ -20,21 +20,25 @@ This is a R&D project developed by WakeOnWeb (WoW). It should be used for practi
 Ensure you have a postgreSql server running (wow-docker-env is recommended)
 
 ## Getting started
-- Update your **DATABASE_URL** **API_BASE_URI** in your .env*.local file 
+- Update your **DATABASE_URL** in your .env*.local file 
         
         DATABASE_URL=postgresql://[user]:[password]@[serverIp]:[port]/kairos
-        API_BASE_URI=http://127.0.0.1:8000/api
+- Start your docker container
         
-- Remember to update your **APP_ENV** variable in .env.local file if you used any
-other configuration file like _.env.test.local_
+        make start        
 - Install project dependencies
         
+        make shell
         composer install
-- Start your symfony server
-
-        ./bin/console server:run
-        
 - Run tests
+    
+    - Copy test env file
+     
+            cp server/.env.test server/.env.test.local
         
-        ./vendor/bin/phpunit
+    - Remove **DATABASE_URL** from server/.env.test.local file
+    - Set **API_BASE_URI** to _http://kairos:8000_ 
+    - Run test using make
+    
+            make unit
         
